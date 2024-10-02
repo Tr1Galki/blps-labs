@@ -1,6 +1,6 @@
-package blps.lab.repositories;
+package blps.lab.article.repository;
 
-import blps.lab.entities.Review;
+import blps.lab.article.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package blps.lab.entities;
+package blps.lab.article.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

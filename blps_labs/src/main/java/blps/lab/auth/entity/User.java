@@ -1,4 +1,4 @@
-package blps.lab.entities;
+package blps.lab.auth.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

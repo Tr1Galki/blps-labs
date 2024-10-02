@@ -6,8 +6,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import blps.lab.entities.User;
-import blps.lab.repositories.UserRepository;
+import blps.lab.auth.entity.User;
+import blps.lab.auth.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor

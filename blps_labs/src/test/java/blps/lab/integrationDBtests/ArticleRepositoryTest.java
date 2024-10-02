@@ -1,7 +1,7 @@
 package blps.lab.integrationDBtests;
 
-import blps.lab.entities.Article;
-import blps.lab.repositories.ArticleRepository;
+import blps.lab.article.entity.Article;
+import blps.lab.article.repository.ArticleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

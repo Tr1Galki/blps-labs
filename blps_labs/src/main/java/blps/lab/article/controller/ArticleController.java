@@ -1,10 +1,10 @@
-package blps.lab.controllers;
+package blps.lab.article.controller;
 
-import blps.lab.entities.Article;
-import blps.lab.entities.Review;
-import blps.lab.entities.User;
-import blps.lab.repositories.ArticleRepository;
-import blps.lab.repositories.ReviewRepository;
+import blps.lab.article.entity.Article;
+import blps.lab.article.entity.Review;
+import blps.lab.auth.entity.User;
+import blps.lab.article.repository.ArticleRepository;
+import blps.lab.article.repository.ReviewRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

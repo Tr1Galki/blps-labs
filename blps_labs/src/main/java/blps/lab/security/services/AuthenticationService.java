@@ -8,7 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import blps.lab.security.jwt.SignInRequest;
-import blps.lab.entities.User;
+import blps.lab.auth.entity.User;
 
 @Service
 @RequiredArgsConstructor
