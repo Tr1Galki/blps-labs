@@ -1,6 +1,7 @@
 package blps.lab.auth.service;
 
 import blps.lab.auth.entity.User;
+import blps.lab.auth.exceptions.UserNotFoundException;
 import blps.lab.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +30,6 @@ public class UserAuthenticationService {
      */
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow();
-//                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
     }
 }

@@ -4,13 +4,12 @@ import blps.lab.article.dto.ArticleRequest;
 import blps.lab.article.dto.ArticleResponse;
 import blps.lab.article.service.ArticleService;
 import blps.lab.auth.entity.User;
+import blps.lab.auth.service.UserAuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +20,7 @@ import java.util.List;
 @Tag(name = "Article")
 public class ArticleController {
     private final ArticleService articleService;
+    private final UserAuthenticationService userAuthenticationService;
 
     @GetMapping
     @Operation(
@@ -46,7 +46,7 @@ public class ArticleController {
         return article.map(ArticleResponse::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElseGet(
-                        () -> ResponseEntity.notFound().build()
+                        () -> ResponseEntity.notFound().build()//todo заменить на эксепшены
                 );
     }
 
@@ -59,8 +59,8 @@ public class ArticleController {
             @PathVariable(value = "articleId") Long articleId,
             @RequestBody String comment
     ) {
-        //todo добавить автора коммента
-        var articleOptional = articleService.addComment(articleId, comment);
+        User currentUser = userAuthenticationService.getCurrentUser();
+        var articleOptional = articleService.addComment(articleId, currentUser.getId(), comment);
         return articleOptional.map(ArticleResponse::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElseGet(
@@ -74,9 +74,8 @@ public class ArticleController {
             description="Доступен авторизованным пользователям"
     )
     public ResponseEntity<List<ArticleResponse>> getDraftArticles() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-        var draftArticles = articleService.getAllDrafts().stream()
+        User currentUser = userAuthenticationService.getCurrentUser();
+        var draftArticles = articleService.getAllDraftsByUser(currentUser.getId()).stream()
                 .map(ArticleResponse::fromEntity)
                 .toList();
         return ResponseEntity.ok(draftArticles);
@@ -88,8 +87,7 @@ public class ArticleController {
             description="Доступен авторизованным пользователям"
     )
     public ResponseEntity<List<ArticleResponse>> getModeratedDraftArticles() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        userAuthenticationService.getCurrentUser();
         var moderatedDrafts = articleService.getAllModeratedDrafts().stream()
                 .map(ArticleResponse::fromEntity)
                 .toList();
@@ -104,6 +102,7 @@ public class ArticleController {
     public ResponseEntity<Void> sendArticleToModerate(
             @PathVariable(value = "draftArticleId") Long draftArticleId
     ) {
+        userAuthenticationService.getCurrentUser();
         if (!articleService.isReadyToModerate(draftArticleId)) {
             return ResponseEntity.notFound().build();
         }
@@ -119,8 +118,7 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> createArticle(
             @RequestBody ArticleRequest request
     ) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        User currentUser = userAuthenticationService.getCurrentUser();
         var article = ArticleRequest.toEntity(request);
         article.setOwnerId(currentUser.getId());
         var savedArticle = articleService.create(article);

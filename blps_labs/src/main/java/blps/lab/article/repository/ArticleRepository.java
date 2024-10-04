@@ -8,7 +8,9 @@ import java.util.List;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    List<Article> findArticlesByIsDraft(boolean moderStatus);
+    List<Article> findArticlesByIsDraft(boolean isDraft);
+
+    List<Article> findArticlesByIsDraftAndOwnerId(Boolean isDraft, Long ownerId);
 
     List<Article> findArticlesByIsDraftAndModerationStatus(boolean isDraft, boolean moderationStatus);
 }

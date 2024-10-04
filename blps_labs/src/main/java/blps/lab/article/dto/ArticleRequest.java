@@ -15,8 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticleRequest {
-    private Long ownerId;
-
     private String title;
 
     private String content;

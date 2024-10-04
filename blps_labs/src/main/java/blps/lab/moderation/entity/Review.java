@@ -29,7 +29,4 @@ public class Review {
 
     @Column(name = "data", nullable = false)
     private String data;
-
-    @Column(name = "rating", nullable = false)
-    private Integer rating;
 }

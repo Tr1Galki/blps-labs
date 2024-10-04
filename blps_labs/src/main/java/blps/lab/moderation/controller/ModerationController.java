@@ -3,6 +3,7 @@ package blps.lab.moderation.controller;
 import java.util.List;
 
 import blps.lab.article.dto.ArticleResponse;
+import blps.lab.auth.service.UserAuthenticationService;
 import blps.lab.moderation.service.ModerationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Moderating")
 public class ModerationController {
     private final ModerationService moderationService;
+    private final UserAuthenticationService userAuthenticationService;
 
     @PostMapping("/{draftArticleId}/publish")
     @Operation(
@@ -31,6 +33,7 @@ public class ModerationController {
     public ResponseEntity<Void> publishArticle(
             @PathVariable(value = "draftArticleId") Long draftArticleId
     ) {
+        userAuthenticationService.getCurrentUser();
         moderationService.publish(draftArticleId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -41,6 +44,7 @@ public class ModerationController {
             description="Доступен только модераторам"
     )
     public ResponseEntity<List<ArticleResponse>> getAllDraftArticlesToModerate() {
+        userAuthenticationService.getCurrentUser();
         var articles = moderationService.getAllArticlesToModerate().stream()
                 .map(ArticleResponse::fromEntity)
                 .toList();
@@ -56,6 +60,7 @@ public class ModerationController {
             @PathVariable(value = "draftArticleId") Long draftArticleId,
             @RequestBody String review
     ) {
+        userAuthenticationService.getCurrentUser();
         moderationService.addReview(draftArticleId, review);
         return new ResponseEntity<>(HttpStatus.OK);
     }

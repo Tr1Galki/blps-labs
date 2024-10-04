@@ -20,8 +20,8 @@ public class ArticleService {
         return articleRepository.findArticlesByIsDraft(false);
     }
 
-    public List<Article> getAllDrafts() {
-        return articleRepository.findArticlesByIsDraft(true);
+    public List<Article> getAllDraftsByUser(Long userId) {
+        return articleRepository.findArticlesByIsDraftAndOwnerId(true, userId);
     }
 
     public List<Article> getAllModeratedDrafts() {
@@ -51,9 +51,10 @@ public class ArticleService {
         //todo добавить логику отправки сообщения
     }
 
-    public Optional<Article> addComment(Long articleId, String commentData) {
+    public Optional<Article> addComment(Long articleId, Long authorId, String commentData) {
         var comment = Comment.builder()
                 .articleId(articleId)
+                .authorId(authorId)
                 .comment(commentData)
                 .build();
         commentRepository.save(comment);

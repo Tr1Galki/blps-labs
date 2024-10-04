@@ -5,6 +5,7 @@ import java.util.List;
 import blps.lab.article.entity.Article;
 import blps.lab.moderation.entity.Review;
 import blps.lab.article.repository.ArticleRepository;
+import blps.lab.moderation.exceptions.NoSuchDraftArticleException;
 import blps.lab.moderation.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class ModerationService {
     public void publish(Long articleId) {
         var article = articleRepository.findById(articleId).orElseThrow();
         if (!article.getIsDraft()) {
-            throw new IllegalArgumentException("Article is not draft");
+            throw new NoSuchDraftArticleException();
         }
         article.setIsDraft(false);
         articleRepository.save(article);
@@ -31,7 +32,7 @@ public class ModerationService {
     public void addReview(Long articleId, String reviewText) {
         var article = articleRepository.findById(articleId).orElseThrow();
         if (!article.getIsDraft()) {
-            throw new IllegalArgumentException("Article is not draft");
+            throw new NoSuchDraftArticleException();
         }
         var review = Review.builder()
                 .articleId(articleId)
