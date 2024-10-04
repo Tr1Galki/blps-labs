@@ -1,13 +1,14 @@
 package blps.lab.security.services;
 
 
+import blps.lab.security.exceptions.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import blps.lab.auth.entity.User;
-import blps.lab.auth.repository.UserRepository;
+import blps.lab.security.entity.User;
+import blps.lab.security.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +30,11 @@ public class UserService {
      */
     public void create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
-            // Заменить на свои исключения
-            throw new RuntimeException("Пользователь с таким именем уже существует");
+            throw new UserAlreadyExistsException();
         }
 
         if (repository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует");
+            throw new UserAlreadyExistsException();
         }
 
         save(user);

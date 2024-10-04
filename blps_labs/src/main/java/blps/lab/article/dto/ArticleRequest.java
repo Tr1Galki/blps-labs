@@ -24,7 +24,6 @@ public class ArticleRequest {
     private String category;
 
     public static Article toEntity(ArticleRequest articleRequest) {
-        //todo поменять id овнера на текущего пользователя
         return Article.builder()
                 .ownerId(null)
                 .title(articleRequest.getTitle())

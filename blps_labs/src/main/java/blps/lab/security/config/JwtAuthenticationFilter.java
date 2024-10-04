@@ -1,4 +1,4 @@
-package blps.lab.config;
+package blps.lab.security.config;
 
 import blps.lab.security.services.JwtService;
 import blps.lab.security.services.UserService;

@@ -24,8 +24,12 @@ public class ArticleService {
         return articleRepository.findArticlesByIsDraftAndOwnerId(true, userId);
     }
 
-    public List<Article> getAllModeratedDrafts() {
-        return articleRepository.findArticlesByIsDraftAndModerationStatus(true, true);
+    public List<Article> getAllModeratedDraftsByUser(Long userId) {
+        return articleRepository.findArticlesByIsDraftAndModerationStatusAndOwnerId(
+                true,
+                true,
+                userId
+        );
     }
 
     public Optional<Article> findArticle(Long id) {

@@ -1,4 +1,4 @@
-package blps.lab.auth.exceptions;
+package blps.lab.security.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 }

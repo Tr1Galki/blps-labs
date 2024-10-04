@@ -1,4 +1,4 @@
-package blps.lab.auth.controller;
+package blps.lab.security.controller;
 
 import blps.lab.security.jwt.JwtAuthenticationResponse;
 import blps.lab.security.jwt.SignUpRequest;

@@ -2,13 +2,14 @@ package blps.lab.security.services;
 
 import blps.lab.security.jwt.JwtAuthenticationResponse;
 import blps.lab.security.jwt.SignUpRequest;
+import blps.lab.security.roles.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import blps.lab.security.jwt.SignInRequest;
-import blps.lab.auth.entity.User;
+import blps.lab.security.entity.User;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class AuthenticationService {
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.ROLE_USER)
                 .build();
 
         userService.create(user);

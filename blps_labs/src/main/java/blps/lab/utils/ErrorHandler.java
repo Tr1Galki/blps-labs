@@ -1,6 +1,7 @@
 package blps.lab.utils;
 
-import blps.lab.auth.exceptions.UserNotFoundException;
+import blps.lab.security.exceptions.UserAlreadyExistsException;
+import blps.lab.security.exceptions.UserNotFoundException;
 import blps.lab.moderation.exceptions.NoSuchDraftArticleException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,5 +20,11 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDto draftArticleNotFound(){
         return new ErrorDto("No such draft article!");
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorDto internalServerError(){
+        return new ErrorDto("User with this username or email already exist!");
     }
 }

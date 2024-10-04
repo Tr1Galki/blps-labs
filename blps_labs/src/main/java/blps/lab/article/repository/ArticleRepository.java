@@ -13,5 +13,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findArticlesByIsDraftAndOwnerId(Boolean isDraft, Long ownerId);
 
     List<Article> findArticlesByIsDraftAndModerationStatus(boolean isDraft, boolean moderationStatus);
+
+    List<Article> findArticlesByIsDraftAndModerationStatusAndOwnerId(
+            Boolean isDraft,
+            Boolean moderationStatus,
+            Long ownerId
+    );
 }
 

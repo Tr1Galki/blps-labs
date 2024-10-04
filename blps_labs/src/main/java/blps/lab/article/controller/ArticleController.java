@@ -3,8 +3,8 @@ package blps.lab.article.controller;
 import blps.lab.article.dto.ArticleRequest;
 import blps.lab.article.dto.ArticleResponse;
 import blps.lab.article.service.ArticleService;
-import blps.lab.auth.entity.User;
-import blps.lab.auth.service.UserAuthenticationService;
+import blps.lab.security.entity.User;
+import blps.lab.security.services.UserAuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class ArticleController {
         return article.map(ArticleResponse::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElseGet(
-                        () -> ResponseEntity.notFound().build()//todo заменить на эксепшены
+                        () -> ResponseEntity.notFound().build()
                 );
     }
 
@@ -87,8 +87,8 @@ public class ArticleController {
             description="Доступен авторизованным пользователям"
     )
     public ResponseEntity<List<ArticleResponse>> getModeratedDraftArticles() {
-        userAuthenticationService.getCurrentUser();
-        var moderatedDrafts = articleService.getAllModeratedDrafts().stream()
+        User currentUser = userAuthenticationService.getCurrentUser();
+        var moderatedDrafts = articleService.getAllModeratedDraftsByUser(currentUser.getId()).stream()
                 .map(ArticleResponse::fromEntity)
                 .toList();
         return ResponseEntity.ok(moderatedDrafts);
@@ -102,7 +102,6 @@ public class ArticleController {
     public ResponseEntity<Void> sendArticleToModerate(
             @PathVariable(value = "draftArticleId") Long draftArticleId
     ) {
-        userAuthenticationService.getCurrentUser();
         if (!articleService.isReadyToModerate(draftArticleId)) {
             return ResponseEntity.notFound().build();
         }

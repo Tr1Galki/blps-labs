@@ -1,8 +1,8 @@
-package blps.lab.auth.service;
+package blps.lab.security.services;
 
-import blps.lab.auth.entity.User;
-import blps.lab.auth.exceptions.UserNotFoundException;
-import blps.lab.auth.repository.UserRepository;
+import blps.lab.security.entity.User;
+import blps.lab.security.exceptions.UserNotFoundException;
+import blps.lab.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
