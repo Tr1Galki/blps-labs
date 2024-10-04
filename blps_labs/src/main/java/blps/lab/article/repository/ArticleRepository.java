@@ -4,11 +4,12 @@ import blps.lab.article.entity.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    Optional<Article> findById(Long id);
+    List<Article> findArticlesByIsDraft(boolean moderStatus);
 
+    List<Article> findArticlesByIsDraftAndModerationStatus(boolean isDraft, boolean moderationStatus);
 }
 

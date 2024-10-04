@@ -1,7 +1,22 @@
 package blps.lab.article.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import blps.lab.moderation.entity.Review;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
 @Entity
@@ -33,18 +48,22 @@ public class Article {
     @Column(name = "category")
     private String category;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "article_id")
+    private List<Review> moderationReview;
 
-    @Column(name = "moder_comment")
-    private String moderComment;  // Комментарий модератора
-
-    @Column(name = "moder_status", nullable = false)
-    private Boolean moderStatus;  // Статус модерации (true - отправлен на модерацию)
+    @Column(name = "moderation_status", nullable = false)
+    private Boolean moderationStatus;
 
     @Column(name = "is_draft", nullable = false)
-    private Boolean isDraft;  // Флаг черновика
+    private Boolean isDraft;
 
     @Column(name = "views", nullable = false)
-    private Integer views;  // Количество просмотров
+    private Integer views;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "article_id")
+    private List<Comment> comments;
 
     /**
      * Проверяет, содержит ли статья все необходимые поля для публикации.
@@ -52,11 +71,15 @@ public class Article {
      * @return true, если статья не готова к публикации (имеет незаполненные поля).
      */
     public boolean hasNullFieldsForDraft() {
-        return this.title == null || this.title.isEmpty() ||
-                this.content == null || this.content.isEmpty() ||
-                this.category == null || this.category.isEmpty() ||
-                this.views == null ||
-                this.tags == null || this.tags.isEmpty();
+        return this.title == null
+                || this.title.isEmpty()
+                || this.content == null
+                || this.content.isEmpty()
+                || this.category == null
+                || this.category.isEmpty()
+                || this.views == null
+                || this.tags == null
+                || this.tags.isEmpty();
     }
 
     /**

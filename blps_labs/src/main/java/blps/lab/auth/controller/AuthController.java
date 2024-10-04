@@ -23,6 +23,7 @@ public class AuthController {
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
     public JwtAuthenticationResponse signUp(@RequestBody @Valid SignUpRequest request) {
+        //todo добавить проверку на то что юзер существует
         return authenticationService.signUp(request);
     }
 
