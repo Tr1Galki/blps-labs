@@ -1,0 +1,32 @@
+services:
+  blps-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+    networks:
+      - default
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: blps_lab_1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1219
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    command: -p 5432
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
