@@ -1,4 +1,4 @@
-package blps.lab.transaction;
+package blps.lab.transaction.exception;
 
 public class TransactionTimeoutException extends RuntimeException {
 }
