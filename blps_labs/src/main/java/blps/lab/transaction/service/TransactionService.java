@@ -2,7 +2,7 @@ package blps.lab.transaction.service;
 
 import java.util.function.Supplier;
 
-import blps.lab.transaction.TransactionTimeoutException;
+import blps.lab.transaction.exception.TransactionTimeoutException;
 import jakarta.transaction.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

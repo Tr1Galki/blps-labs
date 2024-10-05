@@ -62,6 +62,7 @@ public class ArticleService {
                     var article = articleRepository.findById(id).orElseThrow();
 
                     article.setSentAt(Instant.now());
+                    articleRepository.save(article);
 
                     try {
                         double random = Math.random() * 4000;
@@ -72,10 +73,10 @@ public class ArticleService {
 
                     article.setReceivedAt(Instant.now());
                     article.setModerationStatus(true);
+                    articleRepository.save(article);
                     return article;
                 }
         );
-        articleRepository.save(res);
     }
 
     public Optional<Article> addComment(Long articleId, Long authorId, String commentData) {
