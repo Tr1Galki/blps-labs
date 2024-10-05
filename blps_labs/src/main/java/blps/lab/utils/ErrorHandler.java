@@ -3,6 +3,7 @@ package blps.lab.utils;
 import blps.lab.security.exceptions.UserAlreadyExistsException;
 import blps.lab.security.exceptions.UserNotFoundException;
 import blps.lab.moderation.exceptions.NoSuchDraftArticleException;
+import blps.lab.transaction.TransactionTimeoutException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,7 +25,14 @@ public class ErrorHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorDto internalServerError(){
+    public ErrorDto userAlreadyExistsError(){
         return new ErrorDto("User with this username or email already exist!");
+    }
+
+    @ExceptionHandler(TransactionTimeoutException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorDto transactionTimeoutError(){
+        return new ErrorDto("Транзакция не завершилась в течение ожидаемого времени, но не волнуйтесь," +
+                " наши лучшие разработчики уже работают над этим!");
     }
 }

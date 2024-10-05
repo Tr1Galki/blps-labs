@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -51,6 +52,12 @@ public class Article {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "article_id")
     private List<Review> moderationReview;
+
+    @Column(name = "sent_at")
+    private Instant sentAt;
+
+    @Column(name = "received_at")
+    private Instant receivedAt;
 
     @Column(name = "moderation_status", nullable = false)
     private Boolean moderationStatus;

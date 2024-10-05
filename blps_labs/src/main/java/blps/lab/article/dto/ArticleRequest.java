@@ -33,6 +33,8 @@ public class ArticleRequest {
                 .moderationStatus(false)
                 .isDraft(true)
                 .views(0)
+                .sentAt(null)
+                .receivedAt(null)
                 .build();
     }
 }
