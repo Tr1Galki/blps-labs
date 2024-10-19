@@ -1,4 +1,15 @@
 package blps.lab.utils;
 
-public record ErrorDto(String message) {
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class ErrorDto {
+    private String message;
+
+    public ErrorDto(String message) {
+        this.message = message;
+    }
+
 }

@@ -3,26 +3,34 @@ package blps.lab.transaction.service;
 import java.util.function.Supplier;
 
 import blps.lab.transaction.exception.TransactionTimeoutException;
-import jakarta.transaction.Transaction;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.jta.JtaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
-    private final JtaTransactionManager transactionManager;
+    @Qualifier("transactionManager")
+    private final PlatformTransactionManager transactionManager;
 
-    public <T> T executeTransactional(String name, int timeout, Supplier<T> supplier) {
+    public <T> void executeTransactional(Supplier<T> supplier) {
+
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setName("pinTx");
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = transactionManager.getTransaction(def);
+
         try {
-            Transaction transaction = transactionManager.createTransaction(name, timeout);
             try {
                 T result = supplier.get();
-                transaction.commit();
+                transactionManager.commit(status);
                 System.err.println("Transaction completed successfully");
-                return result;
             } catch (Exception e) {
-                transaction.rollback();
+                transactionManager.rollback(status);
                 throw new TransactionTimeoutException();
             }
         } catch (Exception e) {

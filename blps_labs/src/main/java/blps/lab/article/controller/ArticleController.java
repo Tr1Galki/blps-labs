@@ -2,9 +2,8 @@ package blps.lab.article.controller;
 
 import blps.lab.article.dto.ArticleRequest;
 import blps.lab.article.dto.ArticleResponse;
+import blps.lab.article.entity.Article;
 import blps.lab.article.service.ArticleService;
-import blps.lab.security.entity.User;
-import blps.lab.security.services.UserAuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/article")
@@ -20,7 +21,6 @@ import java.util.List;
 @Tag(name = "Article")
 public class ArticleController {
     private final ArticleService articleService;
-    private final UserAuthenticationService userAuthenticationService;
 
     @GetMapping
     @Operation(
@@ -28,9 +28,10 @@ public class ArticleController {
             description="Доступен всем пользователям"
     )
     public ResponseEntity<List<ArticleResponse>> getAllArticles() {
-        var articles = articleService.getAllArticles().stream()
+        List<ArticleResponse> articles = new ArrayList<>();
+        articleService.getAllArticles().stream()
                 .map(ArticleResponse::fromEntity)
-                .toList();
+                .forEach(articles::add);
         return ResponseEntity.ok(articles);
     }
 
@@ -42,7 +43,7 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> getArticleById(
             @PathVariable(value = "articleId") Long articleId
     ) {
-        var article = articleService.findArticle(articleId);
+        Optional<Article> article = articleService.findArticle(articleId);
         return article.map(ArticleResponse::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElseGet(
@@ -59,8 +60,7 @@ public class ArticleController {
             @PathVariable(value = "articleId") Long articleId,
             @RequestBody String comment
     ) {
-        User currentUser = userAuthenticationService.getCurrentUser();
-        var articleOptional = articleService.addComment(articleId, currentUser.getId(), comment);
+        Optional<Article> articleOptional = articleService.addComment(articleId, comment);
         return articleOptional.map(ArticleResponse::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElseGet(
@@ -74,10 +74,10 @@ public class ArticleController {
             description="Доступен авторизованным пользователям"
     )
     public ResponseEntity<List<ArticleResponse>> getDraftArticles() {
-        User currentUser = userAuthenticationService.getCurrentUser();
-        var draftArticles = articleService.getAllDraftsByUser(currentUser.getId()).stream()
+        List<ArticleResponse> draftArticles = new ArrayList<>();
+        articleService.getAllArticles().stream()
                 .map(ArticleResponse::fromEntity)
-                .toList();
+                .forEach(draftArticles::add);
         return ResponseEntity.ok(draftArticles);
     }
 
@@ -87,10 +87,10 @@ public class ArticleController {
             description="Доступен авторизованным пользователям"
     )
     public ResponseEntity<List<ArticleResponse>> getModeratedDraftArticles() {
-        User currentUser = userAuthenticationService.getCurrentUser();
-        var moderatedDrafts = articleService.getAllModeratedDraftsByUser(currentUser.getId()).stream()
+        List<ArticleResponse> moderatedDrafts = new ArrayList<>();
+        articleService.getAllArticles().stream()
                 .map(ArticleResponse::fromEntity)
-                .toList();
+                .forEach(moderatedDrafts::add);
         return ResponseEntity.ok(moderatedDrafts);
     }
 
@@ -117,10 +117,8 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> createArticle(
             @RequestBody ArticleRequest request
     ) {
-        User currentUser = userAuthenticationService.getCurrentUser();
-        var article = ArticleRequest.toEntity(request);
-        article.setOwnerId(currentUser.getId());
-        var savedArticle = articleService.create(article);
+        Article article = ArticleRequest.toEntity(request);
+        Article savedArticle = articleService.create(article);
         return ResponseEntity.ok(ArticleResponse.fromEntity(savedArticle));
     }
 }

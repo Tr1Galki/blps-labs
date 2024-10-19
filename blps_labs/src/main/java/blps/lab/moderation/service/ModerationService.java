@@ -7,6 +7,7 @@ import blps.lab.moderation.entity.Review;
 import blps.lab.article.repository.ArticleRepository;
 import blps.lab.moderation.exceptions.NoSuchDraftArticleException;
 import blps.lab.moderation.repository.ReviewRepository;
+import blps.lab.transaction.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,14 @@ import org.springframework.stereotype.Service;
 public class ModerationService {
     private final ArticleRepository articleRepository;
     private final ReviewRepository reviewRepository;
+    private final TransactionService transactionService;
 
     public List<Article> getAllArticlesToModerate() {
         return articleRepository.findArticlesByIsDraftAndModerationStatus(true, false);
     }
 
     public void publish(Long articleId) {
-        var article = articleRepository.findById(articleId).orElseThrow();
+        Article article = articleRepository.findById(articleId).orElse(null);
         if (!article.getIsDraft()) {
             throw new NoSuchDraftArticleException();
         }
@@ -30,16 +32,24 @@ public class ModerationService {
     }
 
     public void addReview(Long articleId, String reviewText) {
-        var article = articleRepository.findById(articleId).orElseThrow();
-        if (!article.getIsDraft()) {
-            throw new NoSuchDraftArticleException();
-        }
-        var review = Review.builder()
-                .articleId(articleId)
-                .data(reviewText)
-                .build();
-        reviewRepository.save(review);
-        article.setModerationStatus(true);
-        articleRepository.save(article);
+        transactionService.executeTransactional(
+                () -> {
+                    Article article = articleRepository.findById(articleId).orElse(null);
+                    if (!article.getIsDraft()) {
+                        throw new NoSuchDraftArticleException();
+                    }
+                    Review review = Review.builder()
+                            .articleId(articleId)
+                            .data(reviewText)
+                            .build();
+                    reviewRepository.save(review);
+                    article.setModerationStatus(true);
+                    if (true) {
+                        throw new RuntimeException();
+                    }
+                    articleRepository.save(article);
+                    return article;
+                }
+        );
     }
 }

@@ -46,21 +46,19 @@ public class ArticleService {
     }
 
     public boolean isReadyToModerate(Long id) {
-        var articleOpt = articleRepository.findById(id);
-        if (articleOpt.isEmpty()) {
+        Optional<Article> articleOpt = articleRepository.findById(id);
+        if (!articleOpt.isPresent()) {
             return false;
         }
-        var article = articleOpt.get();
+        Article article = articleOpt.get();
         return article.getIsDraft();
     }
 
     public void sendToModerate(Long id) {
 
-        var res = transactionService.executeTransactional(
-                "trySendToModerate",
-                2,
+        transactionService.executeTransactional(
                 () -> {
-                    var article = articleRepository.findById(id).orElseThrow();
+                    Article article = articleRepository.findById(id).orElse(null);
 
                     article.setSentAt(Instant.now());
                     articleRepository.save(article);
@@ -80,10 +78,9 @@ public class ArticleService {
         );
     }
 
-    public Optional<Article> addComment(Long articleId, Long authorId, String commentData) {
-        var comment = Comment.builder()
+    public Optional<Article> addComment(Long articleId, String commentData) {
+        Comment comment = Comment.builder()
                 .articleId(articleId)
-                .authorId(authorId)
                 .comment(commentData)
                 .build();
         commentRepository.save(comment);
