@@ -1,0 +1,27 @@
+{
+  "components": [
+    {
+      "label": "Логин",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_13y30ev",
+        "columns": null
+      },
+      "id": "Field_1df5faq",
+      "key": "login",
+      "description": "Введите логин",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_0t4yu99",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 16
+}

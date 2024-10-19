@@ -1,0 +1,52 @@
+{
+  "components": [
+    {
+      "label": "Логин",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_16lcaq5",
+        "columns": null
+      },
+      "id": "Field_0mpl4f9",
+      "key": "login",
+      "description": "Введите логин",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Пароль",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_01itobx",
+        "columns": null
+      },
+      "id": "Field_1ixy3u8",
+      "key": "password",
+      "description": "Введите пароль",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "email",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0jy8ne6",
+        "columns": null
+      },
+      "id": "Field_1q9by8v",
+      "key": "email",
+      "description": "Введите почту"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0rvxe68",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 16
+}

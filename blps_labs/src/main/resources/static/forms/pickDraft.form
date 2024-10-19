@@ -1,0 +1,28 @@
+{
+  "components": [
+    {
+      "label": "Введите номер статьи",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0opr6lt",
+        "columns": null
+      },
+      "id": "Field_1vddbtq",
+      "key": "article",
+      "description": "Какой черновик хотите выбрать?",
+      "validate": {
+        "required": true,
+        "pattern": "^[1-5]$"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_1mcxp7c",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 16
+}

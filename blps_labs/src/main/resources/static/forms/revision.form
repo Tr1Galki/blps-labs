@@ -1,0 +1,57 @@
+{
+  "components": [
+    {
+      "label": "Введите номер статьи",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_14klm0b",
+        "columns": null
+      },
+      "id": "Field_1keivqw",
+      "key": "article",
+      "description": "Какой черновик хотите выбрать?",
+      "validate": {
+        "pattern": "^[1-5]$",
+        "required": true
+      }
+    },
+    {
+      "label": "Модерация заявки",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1nu8w40",
+        "columns": null
+      },
+      "id": "Field_1mgdzoy",
+      "key": "moderatestatus",
+      "description": "есть ли правки?",
+      "validate": {
+        "required": true,
+        "pattern": "^(да|нет)$"
+      }
+    },
+    {
+      "label": "Текст правок",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0y6vgzn",
+        "columns": null
+      },
+      "id": "Field_0ith6xm",
+      "key": "revision",
+      "description": "Напиши правки",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_1f8qrre",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 16
+}

@@ -1,0 +1,43 @@
+{
+  "components": [
+    {
+      "label": "Pack Cash",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1gxdnb1",
+        "columns": null
+      },
+      "id": "Field_0xq1pno",
+      "key": "money",
+      "description": "How much cash do you want to bring?",
+      "validate": {
+        "required": true,
+        "pattern": "^[+-]?\\d+(\\.\\d+)?$"
+      }
+    },
+    {
+      "label": "Where are you headed?",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_11xfr0l",
+        "columns": null
+      },
+      "id": "Field_1jwlhgo",
+      "key": "country",
+      "description": "Contry you are going to",
+      "validate": {
+        "required": true,
+        "pattern": "Amerima|France|Russia"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_1ref5ga",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 16
+}
