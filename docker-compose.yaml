@@ -1,15 +1,83 @@
 services:
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "2181:2181"
+      - 22181:2181
+    networks:
+      - default
 
   kafka:
-    image: wurstmeister/kafka
+    image: confluentinc/cp-kafka:latest
     ports:
       - "9092:9092"
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    expose:
+      - "9092"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zookeeper
+    hostname: kafka
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - default
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: blps_lab_1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1219
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    command: -p 5432
+    networks:
+      - default
+
+  user_service:
+    build:
+      context: .
+      dockerfile: ./user_service/Dockerfile
+    environment:
+      DB_HOST: db
+      KAFKA_HOST: kafka
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+    depends_on:
+      - db
+      - kafka
+    ports:
+      - 8090:8090
+    networks:
+      - default
+
+  moder_service:
+    build:
+      context: .
+      dockerfile: ./moder_service/Dockerfile
+    environment:
+      DB_HOST: db
+      KAFKA_HOST: kafka
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+      - db
+      - kafka
+    ports:
+      - 8091:8091
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge

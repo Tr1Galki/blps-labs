@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import shared.entity.SendModerationArticle;
+import lab.moder_service.shared.SendModerationArticle;
 
 @Component
 @Slf4j
@@ -19,8 +19,8 @@ public class KafkaListenerImpl {
     private final KafkaSender kafkaSender;
 
     @KafkaListener(
-            topics = KafkaTopic.SEND_MODERATION_ARTICLE_TOPIC,
-//            topics = WRONG_TOPIC,
+//            topics = KafkaTopic.SEND_MODERATION_ARTICLE_TOPIC,
+            topics = WRONG_TOPIC,
             groupId = "user-group",
             containerFactory = "userKafkaListenerContainerFactory"
     )

@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+@Slf4j
 @Configuration
 @EnableScheduling
 @RequiredArgsConstructor
-@Slf4j
 public class ScheduleConfig {
     private final ArticleService articleService;
 
