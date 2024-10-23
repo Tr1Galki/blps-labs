@@ -1,10 +1,12 @@
 package blps.lab.delegates;
 
 import blps.lab.security.entity.User;
+import blps.lab.security.exceptions.UserAlreadyExistsException;
 import blps.lab.security.roles.Role;
 import blps.lab.security.services.UserService;
 import jakarta.inject.Named;
 import lombok.AllArgsConstructor;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,11 @@ public class SaveUser implements JavaDelegate {
                 .email(email)
                 .role(Role.ROLE_USER)
                 .build();
-        userService.create(user);
+        try {
+            userService.create(user);
+        } catch (UserAlreadyExistsException e) {
+            delegateExecution.setVariable("exception", "USER_OR_EMAIL_ALREADY_EXISTS");
+            throw new BpmnError("UserIsAlreadyExist");
+        }
     }
 }

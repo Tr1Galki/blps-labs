@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14z19at" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <bpmn:error id="Error_0i01aly" name="UsernameNotFoundException" errorCode="UsernameNotFoundException" camunda:errorMessage="This user name does no exist" />
+  <bpmn:error id="Error_1qsjna4" name="IncorrectPasswordException" errorCode="IncorrectPasswordException" camunda:errorMessage="Password is incorrect" />
+  <bpmn:error id="Error_1dtx584" name="NotAllowedRoleException" errorCode="NotAllowedRoleException" camunda:errorMessage="This role does not allowed to send" />
+  <bpmn:collaboration id="Collaboration_0aeoawq">
+    <bpmn:participant id="Participant_0ecgqj0" name="Создание пользователя" processRef="create_user" />
+  </bpmn:collaboration>
+  <bpmn:process id="create_user" name="create_user" isExecutable="true" camunda:historyTimeToLive="P10D">
+    <bpmn:laneSet id="LaneSet_1k0ely2">
+      <bpmn:lane id="Lane_0on9xa4" name="Пользователь">
+        <bpmn:flowNodeRef>Event_1ja3ng6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_03kmt7a</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1gl7ano</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_16zqw5n</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1nwakk0" name="Сервер">
+        <bpmn:flowNodeRef>Activity_0bxaqws</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1q79ufi</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Event_1ja3ng6" name="Нет потльзоватея">
+      <bpmn:outgoing>Flow_0vfjk8p</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_03kmt7a" name="Создание пользователя" camunda:formKey="camunda-forms:/forms/createAccount.form">
+      <bpmn:incoming>Flow_0vfjk8p</bpmn:incoming>
+      <bpmn:incoming>Flow_1c29etw</bpmn:incoming>
+      <bpmn:outgoing>Flow_12cops0</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_0bxaqws" name="Сохранение данных пользователя в бд" camunda:delegateExpression="${saveUser}">
+      <bpmn:incoming>Flow_12cops0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0n2yv3f</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1fhu24c">
+        <bpmn:targetRef>DataStoreReference_1kjle10</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:dataStoreReference id="DataStoreReference_1kjle10" name="данные пользователей" />
+    <bpmn:endEvent id="Event_1gl7ano">
+      <bpmn:incoming>Flow_0n2yv3f</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0vfjk8p" sourceRef="Event_1ja3ng6" targetRef="Activity_03kmt7a" />
+    <bpmn:sequenceFlow id="Flow_12cops0" sourceRef="Activity_03kmt7a" targetRef="Activity_0bxaqws" />
+    <bpmn:sequenceFlow id="Flow_0n2yv3f" sourceRef="Activity_0bxaqws" targetRef="Event_1gl7ano" />
+    <bpmn:boundaryEvent id="Event_1q79ufi" attachedToRef="Activity_0bxaqws">
+      <bpmn:outgoing>Flow_0wlh1sh</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1saavzc" errorRef="Error_1q6p8zd" camunda:errorCodeVariable="UserIsAlreadyExist" camunda:errorMessageVariable="User is already exist" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_0wlh1sh" sourceRef="Event_1q79ufi" targetRef="Activity_16zqw5n" />
+    <bpmn:userTask id="Activity_16zqw5n" name="Просмотр кода ошибки" camunda:formKey="camunda-forms:/forms/checkException.form">
+      <bpmn:incoming>Flow_0wlh1sh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1c29etw</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1c29etw" sourceRef="Activity_16zqw5n" targetRef="Activity_03kmt7a" />
+  </bpmn:process>
+  <bpmn:error id="Error_1q6p8zd" name="UserIsAlreadyExist" errorCode="UserIsAlreadyExist" camunda:errorMessage="User is already exist" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0aeoawq">
+      <bpmndi:BPMNShape id="Participant_0ecgqj0_di" bpmnElement="Participant_0ecgqj0" isHorizontal="true">
+        <dc:Bounds x="150" y="80" width="620" height="610" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0on9xa4_di" bpmnElement="Lane_0on9xa4" isHorizontal="true">
+        <dc:Bounds x="180" y="80" width="590" height="330" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1nwakk0_di" bpmnElement="Lane_1nwakk0" isHorizontal="true">
+        <dc:Bounds x="180" y="410" width="590" height="280" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0ynwfop" bpmnElement="Event_1ja3ng6">
+        <dc:Bounds x="202" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="186" y="275" width="69" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1uhfzx8" bpmnElement="Activity_03kmt7a">
+        <dc:Bounds x="340" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1u85aph_di" bpmnElement="Activity_0bxaqws">
+        <dc:Bounds x="340" y="450" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1kjle10_di" bpmnElement="DataStoreReference_1kjle10">
+        <dc:Bounds x="365" y="585" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="352" y="642" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1gl7ano_di" bpmnElement="Event_1gl7ano">
+        <dc:Bounds x="623" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_19m62z7" bpmnElement="Activity_16zqw5n">
+        <dc:Bounds x="480" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1q79ufi_di" bpmnElement="Event_1q79ufi">
+        <dc:Bounds x="402" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_1m2u58v" bpmnElement="Flow_0vfjk8p">
+        <di:waypoint x="238" y="250" />
+        <di:waypoint x="340" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12cops0_di" bpmnElement="Flow_12cops0">
+        <di:waypoint x="390" y="290" />
+        <di:waypoint x="390" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0n2yv3f_di" bpmnElement="Flow_0n2yv3f">
+        <di:waypoint x="440" y="490" />
+        <di:waypoint x="641" y="490" />
+        <di:waypoint x="641" y="268" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wlh1sh_di" bpmnElement="Flow_0wlh1sh">
+        <di:waypoint x="438" y="450" />
+        <di:waypoint x="530" y="450" />
+        <di:waypoint x="530" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c29etw_di" bpmnElement="Flow_1c29etw">
+        <di:waypoint x="480" y="250" />
+        <di:waypoint x="440" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1fhu24c_di" bpmnElement="DataOutputAssociation_1fhu24c">
+        <di:waypoint x="390" y="530" />
+        <di:waypoint x="390" y="585" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
