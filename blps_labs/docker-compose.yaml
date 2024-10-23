@@ -1,5 +1,5 @@
 services:
-  blps-app:
+  blps-camunda-app:
     build:
       context: .
       dockerfile: Dockerfile

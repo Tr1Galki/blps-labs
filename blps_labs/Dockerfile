@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Копируем скомпилированный файл класса в контейнер
-COPY target/lab-BEST_BLPS_LAB_BY_Tr1-Galki_AND_Satret.jar /app/target/lab-BEST_BLPS_LAB_BY_Tr1-Galki_AND_Satret.jar
+COPY target/blps-comunda.jar /app/blps-comunda.jar
 
 # Запускаем Java-программу
-ENTRYPOINT ["java", "-jar", "target/lab-BEST_BLPS_LAB_BY_Tr1-Galki_AND_Satret.jar"]
+ENTRYPOINT ["java", "-jar", "blps-comunda.jar"]
