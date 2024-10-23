@@ -1,34 +1,15 @@
 {
   "components": [
     {
-      "label": "Введите номер статьи",
-      "type": "textfield",
+      "label": "Да",
+      "type": "checkbox",
       "layout": {
-        "row": "Row_0nmpeu7",
+        "row": "Row_1cyeirq",
         "columns": null
       },
-      "id": "Field_1xjgjxu",
-      "key": "article",
-      "description": "Какой черновик хотите выбрать?",
-      "validate": {
-        "required": true,
-        "pattern": "^[1-5]$"
-      }
-    },
-    {
-      "label": "Модерация заявки",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_1dmazli",
-        "columns": null
-      },
-      "id": "Field_0vacolw",
+      "id": "Field_1vxcgat",
       "key": "moderatestatus",
-      "description": "есть ли правки?",
-      "validate": {
-        "required": true,
-        "pattern": "^(да|нет)$"
-      }
+      "description": "Есть ли правки?"
     }
   ],
   "type": "default",

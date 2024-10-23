@@ -12,7 +12,7 @@
       "description": "Какой черновик хотите выбрать?",
       "validate": {
         "required": true,
-        "pattern": "^[1-5]$"
+        "pattern": "^\\d+$"
       }
     }
   ],

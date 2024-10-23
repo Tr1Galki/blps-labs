@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14z19at" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <bpmn:collaboration id="Collaboration_1fsoe05">
+    <bpmn:participant id="Participant_1dbmnuk" name="Оповещение старых черновиков" processRef="log_old_drafts" />
+  </bpmn:collaboration>
+  <bpmn:process id="log_old_drafts" name="log_old_drafts" isExecutable="true" camunda:historyTimeToLive="P10D">
+    <bpmn:endEvent id="Event_17unfh3">
+      <bpmn:incoming>Flow_1j2kytg</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_1s9zrsw" name="Оповещение о старых черновиках" camunda:delegateExpression="${logOldDrafts}">
+      <bpmn:incoming>Flow_1xwfo2h</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j2kytg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1j2kytg" sourceRef="Activity_1s9zrsw" targetRef="Event_17unfh3" />
+    <bpmn:sequenceFlow id="Flow_1xwfo2h" sourceRef="StartEvent_1" targetRef="Activity_1s9zrsw" />
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1xwfo2h</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0xsmjc7">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression"> R/PT1M</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:startEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1fsoe05">
+      <bpmndi:BPMNShape id="Participant_1dbmnuk_di" bpmnElement="Participant_1dbmnuk" isHorizontal="true">
+        <dc:Bounds x="160" y="52" width="600" height="238" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17unfh3_di" bpmnElement="Event_17unfh3">
+        <dc:Bounds x="612" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1sngcqm_di" bpmnElement="Activity_1s9zrsw">
+        <dc:Bounds x="400" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18x8of0_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="259" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1j2kytg_di" bpmnElement="Flow_1j2kytg">
+        <di:waypoint x="500" y="177" />
+        <di:waypoint x="612" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1xwfo2h_di" bpmnElement="Flow_1xwfo2h">
+        <di:waypoint x="295" y="177" />
+        <di:waypoint x="400" y="177" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,22 +1,18 @@
 {
   "components": [
     {
-      "label": "Текст правок",
+      "label": "Exception",
       "type": "textfield",
       "layout": {
-        "row": "Row_0y6vgzn",
+        "row": "Row_1j7h1dm",
         "columns": null
       },
-      "id": "Field_0ith6xm",
-      "key": "review",
-      "description": "Напиши правки",
-      "validate": {
-        "required": true
-      }
+      "id": "Field_1hlm2c1",
+      "key": "exception"
     }
   ],
   "type": "default",
-  "id": "Form_1f8qrre",
+  "id": "Form_0hw5hvv",
   "exporter": {
     "name": "Camunda Modeler",
     "version": "5.28.0"
